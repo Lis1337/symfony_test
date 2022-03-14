@@ -1,0 +1,41 @@
+version: '3'
+services:
+
+  all.nginx:
+    container_name: all.nginx
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./www:/var/www
+      - ./logs:/var/log/nginx
+    links:
+      - all.php
+
+  all.php:
+    container_name: all.php
+    build: ./docker/php
+    links:
+      - all.mysql
+    volumes:
+      - ./www:/var/www
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  all.mysql:
+    container_name: all.mysql
+    image: mariadb:10.3.13
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  all.redis:
+    container_name: all.redis
+    image: "redis:5.0.5-alpine"
