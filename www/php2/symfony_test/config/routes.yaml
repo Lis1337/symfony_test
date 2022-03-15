@@ -1,0 +1,7 @@
+index:
+    path: /hello/{name}
+    controller:  'App\Controller\DefaultController::index'
+
+apiex:
+    path: /apiex/{name}
+    controller: 'App\Controller\DefaultController::apiExample'
