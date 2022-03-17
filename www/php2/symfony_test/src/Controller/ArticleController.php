@@ -49,12 +49,16 @@ class ArticleController extends AbstractController
 
         $article = new Article();
         $article->setTitle($_POST['title']);
-        $article->setContent($_POST['content']);
-        $article->setAuthorId($_POST['author_id']);
+        if ($_POST['content']) {
+            $article->setContent($_POST['content']);
+        }
+        $userId = $doctrine->getRepository(User::class)->find($_POST['author_id']);
+        $article->setAuthorId($userId);
+
 
         $entityManager->persist($article);
         $entityManager->flush();
 
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('article_index');
     }
 }

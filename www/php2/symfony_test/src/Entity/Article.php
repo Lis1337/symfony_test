@@ -69,7 +69,7 @@ class Article
         return $this->author_id->getid();
     }
 
-    public function setAuthorId(int $author_id): self
+    public function setAuthorId(?User $author_id): self
     {
         $this->author_id = $author_id;
 
