@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+    <a href="/article/create"><button>Create article</button></a>
+
+    {% for article in articles %}
+        <a href="article/{{ article.id }}">
+            <h2>
+                Article № {{ article.id }}
+            </h2>
+        </a>
+        title: {{ article.title }} <br>
+        content: {{ article.content }} <br>
+        author_id: {{ article.authorid }} <br>
+    {% endfor %}
+{% endblock %}

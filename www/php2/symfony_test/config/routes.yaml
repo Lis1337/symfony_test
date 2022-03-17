@@ -1,7 +1,15 @@
-index:
-    path: /hello/{name}
-    controller:  'App\Controller\DefaultController::index'
+article_index:
+    path: /article
+    controller: 'App\Controller\ArticleController::index'
 
-apiex:
-    path: /apiex/{name}
-    controller: 'App\Controller\DefaultController::apiExample'
+article_create:
+    path: /article/create
+    controller: 'App\Controller\ArticleController::create'
+
+article_save:
+    path: /article/save
+    controller: 'App\Controller\ArticleController::save'
+
+article_show:
+    path: /article/{id}
+    controller: 'App\Controller\ArticleController::show'

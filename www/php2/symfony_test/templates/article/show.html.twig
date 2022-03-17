@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Article № {{ article.id }} {% endblock %}
+
+{% block body %}
+    <p>
+    Title: {{ article.title }}
+    </p>
+    <p>
+    Content: {{ article.content }}
+    </p>
+    <p>
+    author_id: {{ article.authorid }}
+    </p>
+{% endblock %}
