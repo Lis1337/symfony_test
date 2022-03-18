@@ -13,3 +13,11 @@ article_save:
 article_show:
     path: /article/{id}
     controller: 'App\Controller\ArticleController::show'
+
+article_edit:
+    path: /article/{id}/edit
+    controller: 'App\Controller\ArticleController::edit'
+
+article_delete:
+    path: /article/{id}/delete
+    controller: 'App\Controller\ArticleController::delete'

@@ -3,6 +3,9 @@
 {% block title %} Article № {{ article.id }} {% endblock %}
 
 {% block body %}
+    <h1>
+        Article № {{ article.id }}
+    </h1>
     <p>
     Title: {{ article.title }}
     </p>
@@ -11,5 +14,26 @@
     </p>
     <p>
     author_id: {{ article.authorid }}
+    </p>
+    <p>
+        <a href="/article">
+            <button>
+                return to main
+            </button>
+        </a>
+    </p>
+    <p>
+        <a href="/article/{{ article.id }}/edit">
+            <button>
+                edit article
+            </button>
+        </a>
+    </p>
+    <p>
+        <form action="/article/{{ article.id }}/delete">
+            <button>
+                delete article
+            </button>
+        </form>
     </p>
 {% endblock %}

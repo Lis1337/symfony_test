@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @ApiResource()
@@ -35,12 +36,19 @@ class Article
      */
     private $author_id;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getTitle()
     {
         return $this->title;
     }
@@ -52,7 +60,7 @@ class Article
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent()
     {
         return $this->content;
     }
@@ -64,9 +72,19 @@ class Article
         return $this;
     }
 
-    public function getAuthorId(): int
+    public function getAuthorId()
     {
-        return $this->author_id->getid();
+        return $this->author_id;
+    }
+
+    public function getUsers(ManagerRegistry $doctrine): array
+    {
+        $userIds = [];
+        $users = $doctrine->getManager()->getRepository(User::class)->findAll();
+        foreach ($users as $user) {
+            $userIds[] = $user->getId;
+        }
+        return $userIds;
     }
 
     public function setAuthorId(?User $author_id): self

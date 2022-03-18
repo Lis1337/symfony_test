@@ -4,25 +4,14 @@
 
 {% block body %}
 
-    <form method="post" enctype="multipart/form-data" action="/article/save" name="save">
-        <p>
-            Title: <input name="title" maxlength="100" required>
-        </p>
-        <p>
-            Content: <input name="content" maxlength="200">
-        </p>
-        <p>
-            Author_id:
-            <select name="author_id" required>
-                {% for user in users %}
-                    <option>{{ user.id }}</option>
-                {% endfor %}
-            </select>
-        </p>
-
-        <button>
-            Save
-        </button>
-    </form>
+    <p>
+        Title: {{ form(form.title) }}
+    </p>
+    <p>
+        Content: {{ form(form.content) }}
+    </p>
+    <p>
+        Author_id: {{ form(form.author_id) }}
+    </p>
 
 {% endblock %}
