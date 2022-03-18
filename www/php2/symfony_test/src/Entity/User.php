@@ -41,6 +41,11 @@ class User
         $this->articles = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) 'id=' . $this->id . '. ' . $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

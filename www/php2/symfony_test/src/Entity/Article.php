@@ -77,19 +77,9 @@ class Article
         return $this->author_id;
     }
 
-    public function getUsers(ManagerRegistry $doctrine): array
-    {
-        $userIds = [];
-        $users = $doctrine->getManager()->getRepository(User::class)->findAll();
-        foreach ($users as $user) {
-            $userIds[] = $user->getId;
-        }
-        return $userIds;
-    }
-
     public function setAuthorId(?User $author_id): self
     {
-        $this->author_id = $author_id;
+        $this->author_id->id = $author_id;
 
         return $this;
     }
