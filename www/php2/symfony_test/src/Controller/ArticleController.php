@@ -3,33 +3,30 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Form\Article\ArticleCreateForm;
-use App\Form\Article\ArticleEditForm;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ArticleController extends AbstractController
 {
-    public ManagerRegistry $doctrine;
-    public EntityManagerInterface $entityManager;
+    public object $doctrine;
 
-    public function __construct(
-        ManagerRegistry $doctrine,
-        EntityManagerInterface $entityManager
-    )
+    public function __construct(ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
-        $this->entityManager = $entityManager;
+        $this->doctrine = $doctrine->getManager();
     }
 
     public function index(): Response
     {
-        $articles = $this->doctrine->getManager()->getRepository(Article::class)->findAll();
+        $articles = $this->doctrine->getRepository(Article::class)->findAll();
         return $this->render(
             'article/index.html.twig',
             ['articles' => $articles]
@@ -38,7 +35,7 @@ class ArticleController extends AbstractController
 
     public function show($id): Response
     {
-        $article = $this->doctrine->getManager()->getRepository(Article::class)->find($id);
+        $article = $this->doctrine->getRepository(Article::class)->find($id);
 
         return $this->render(
             'article/show.html.twig',
@@ -48,24 +45,37 @@ class ArticleController extends AbstractController
 
     public function create(Request $request): Response
     {
-        $form = $this->createForm(ArticleCreateForm::class);
+        $getUsers = $this->doctrine->getRepository(User::class)->findAll();
+        $article = new Article();
+
+        $form = $this->createFormBuilder($article)
+            ->add('title', TextType::class, [
+                'attr' => ['size' => 100]
+            ])
+
+            ->add('content', TextType::class, [
+                'attr' => ['size' => 100]
+            ])
+
+            ->add('author_id', EntityType::class, [
+                'class' => User::class,
+                'choices' => $getUsers
+            ])
+
+            ->add('save', SubmitType::class, [
+                'label' => 'save',
+            ])
+
+            ->getForm();
+
 
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $this->doctrine->persist($data);
+            $this->doctrine->flush();
 
-        if ($request->isMethod('POST')) {
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $data = $form->getData();
-                $article = new Article();
-                $article->setTitle($data['title']);
-                $article->setAuthorId($data['author_id']);
-                $article->setContent($data['content']);
-
-                $this->save($article);
-                $this->addFlash('success', 'Article successfully created!');
-
-                return $this->redirectToRoute('article_index');
-            }
+            return $this->redirectToRoute('article_index');
         }
 
         return $this->render('article/create.html.twig', [
@@ -73,50 +83,29 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    public function save(Article $article): Void
+    public function save(): RedirectResponse
     {
-        try {
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
 
-        } catch(Exception $ex) {
-            echo 'Cannot create new article';
-        }
     }
 
-    public function edit(Request $request, int $id): Response
+    public function edit($id): Response
     {
-        /** @var Article $article */
-        $article = $this->doctrine->getManager()->getRepository(Article::class)->find($id);
-        $form = $this->createForm(ArticleEditForm::class);
-        $form->handleRequest($request);
-
-        if ($request->isMethod('POST')) {
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $data = $form->getData();
-                $article->setContent($data['content']);
-                $article->setTitle($data['title']);
-
-                $this->save($article);
-                $this->addFlash('success', 'Article successfully changed!');
-
-                return $this->redirectToRoute('article_index');
-            }
-        }
+        $article = $this->doctrine->getRepository(Article::class)->find($id);
 
         return $this->render(
             'article/edit.html.twig',
-            ['form' => $form->createView(), 'id' => $id]
+            ['article' => $article,]
         );
     }
+
+
 
     public function delete($id): RedirectResponse
     {
         $article = $this->doctrine->getRepository(Article::class)->find($id);
 
-        $this->doctrine->getManager()->remove($article);
-        $this->doctrine->getManager()->flush();
+        $this->doctrine->remove($article);
+        $this->doctrine->flush();
 
         return $this->redirectToRoute('article_index');
     }

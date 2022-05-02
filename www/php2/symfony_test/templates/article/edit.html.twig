@@ -1,13 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} edit article {{ id }} {% endblock %}
+{% block title %} edit article {{ article.id }} {% endblock %}
 
 {% block body %}
+    <h1>
+        Edit article № {{ article.id }}
+    </h1>
+    <form action="/article/save" name="edit" method="post" enctype="multipart/form-data">
+        <p>
+            Title:
+            <input name="title" size="100" value="{{ article.title }}">
+        </p>
+        <p>
+            Content:
+            <input name="content" size="200" value="{{ article.content }}">
+        </p>
 
-    <h2>
-        Edit article
-    </h2>
+        <input name="id" type="hidden" value="{{ article.id }}" readonly>
+        <input name="author_id" type="hidden" value="{{ article.authorId }}" readonly>
 
-    {{ form(form) }}
-
+        <button>
+            save
+        </button>
+    </form>
 {% endblock %}
