@@ -3,16 +3,10 @@
 {% block title %} Create article {% endblock %}
 
 {% block body %}
+    <h2>
+        New article
+    </h2>
 
-    <p>
-        Title: {{ form(form.title) }}
-    </p>
-    <p>
-        Content: {{ form(form.content) }}
-    </p>
-    <p>
-        Author_id: {{ form(form.author_id) }}
-    </p>
-    {{ form_widget(form.save) }}
+    {{ form(form) }}
 
 {% endblock %}

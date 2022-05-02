@@ -18,23 +18,23 @@ class Article
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $title;
+    protected string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $content;
+    protected ?string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author_id;
+    protected User $author_id;
 
     public function getId(): int
     {
@@ -48,39 +48,33 @@ class Article
         return $this;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(?string $content): void
     {
         $this->content = $content;
-
-        return $this;
     }
 
-    public function getAuthorId()
+    public function getAuthorId(): User
     {
         return $this->author_id;
     }
 
-    public function setAuthorId(?User $author_id): self
+    public function setAuthorId(User $author_id): void
     {
-        $this->author_id->id = $author_id;
-
-        return $this;
+        $this->author_id = $author_id;
     }
 }
