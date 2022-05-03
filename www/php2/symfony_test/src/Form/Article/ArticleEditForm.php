@@ -18,7 +18,7 @@ class ArticleEditForm extends AbstractType
                 'attr' => ['size' => 100]
             ])
             ->add('content', TextType::class, [
-                'attr' => ['size' => 100]
+                'attr' => ['size' => 100], 'required' => false
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'save'

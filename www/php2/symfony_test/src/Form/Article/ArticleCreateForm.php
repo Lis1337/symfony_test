@@ -26,7 +26,7 @@ class ArticleCreateForm extends AbstractType
                 'attr' => ['size' => 100]
             ])
             ->add('content', TextType::class, [
-                'attr' => ['size' => 100]
+                'attr' => ['size' => 100], 'required' => false
             ])
             ->add('author_id', EntityType::class, [
                 'class' => User::class,

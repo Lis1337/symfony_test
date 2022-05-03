@@ -7,6 +7,19 @@
         New article
     </h2>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+        <p>
+            title: {{ form_widget(form.title) }}
+        </p>
+        <p>
+            content: {{ form_widget(form.content) }}
+        </p>
+        <p>
+            author_id: {{ form_widget(form.author_id) }}
+        </p>
+        <p>
+            {{ form_widget(form.save) }}
+        </p>
+    {{ form_end(form) }}
 
 {% endblock %}

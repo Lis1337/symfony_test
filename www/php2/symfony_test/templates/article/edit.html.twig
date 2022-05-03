@@ -8,6 +8,17 @@
         Edit article
     </h2>
 
-    {{ form(form) }}
+    {{ form_start(form)}}
+    <p>
+        title: {{ form_widget(form.title, {'attr': {'value': article.title}}) }}
+    </p>
+    <p>
+        content: {{ form_widget(form.content, {'attr': {'value': article.content}}) }}
+    </p>
+    <p>
+        {{ form_widget(form.save) }}
+    </p>
+    {{ form_end(form) }}
+
 
 {% endblock %}

@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\Article\ArticleCreateForm;
 use App\Form\Article\ArticleEditForm;
+use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,19 +17,23 @@ class ArticleController extends AbstractController
 {
     public ManagerRegistry $doctrine;
     public EntityManagerInterface $entityManager;
+    public ArticleRepository $articleRepository;
 
     public function __construct(
         ManagerRegistry $doctrine,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ArticleRepository $articleRepository
     )
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $entityManager;
+        $this->articleRepository = $articleRepository;
     }
 
     public function index(): Response
     {
-        $articles = $this->doctrine->getManager()->getRepository(Article::class)->findAll();
+        $articles = $this->articleRepository->findAll();
+        
         return $this->render(
             'article/index.html.twig',
             ['articles' => $articles]
@@ -38,7 +42,7 @@ class ArticleController extends AbstractController
 
     public function show($id): Response
     {
-        $article = $this->doctrine->getManager()->getRepository(Article::class)->find($id);
+        $article = $this->articleRepository->find($id);
 
         return $this->render(
             'article/show.html.twig',
@@ -62,7 +66,7 @@ class ArticleController extends AbstractController
                 $article->setAuthorId($data['author_id']);
                 $article->setContent($data['content']);
 
-                $this->save($article);
+                $this->articleRepository->add($article);
                 $this->addFlash('success', 'Article successfully created!');
 
                 return $this->redirectToRoute('article_index');
@@ -77,7 +81,7 @@ class ArticleController extends AbstractController
     public function edit(Request $request, int $id): Response
     {
         /** @var Article $article */
-        $article = $this->doctrine->getManager()->getRepository(Article::class)->find($id);
+        $article = $this->articleRepository->find($id);
         $form = $this->createForm(ArticleEditForm::class);
         $form->handleRequest($request);
 
@@ -88,7 +92,7 @@ class ArticleController extends AbstractController
                 $article->setContent($data['content']);
                 $article->setTitle($data['title']);
 
-                $this->save($article);
+                $this->articleRepository->add($article);
                 $this->addFlash('success', 'Article successfully changed!');
 
                 return $this->redirectToRoute('article_index');
@@ -97,27 +101,14 @@ class ArticleController extends AbstractController
 
         return $this->render(
             'article/edit.html.twig',
-            ['form' => $form->createView(), 'id' => $id]
+            ['form' => $form->createView(), 'id' => $id, 'article' => $article]
         );
     }
 
-    public function save(Article $article): Void
+    public function delete(Article $article): RedirectResponse
     {
-        try {
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
-
-        } catch(Exception $ex) {
-            echo 'Cannot create new article';
-        }
-    }
-
-    public function delete($id): RedirectResponse
-    {
-        $article = $this->doctrine->getRepository(Article::class)->find($id);
-
-        $this->doctrine->getManager()->remove($article);
-        $this->doctrine->getManager()->flush();
+        $this->articleRepository->remove($article);
+        $this->addFlash('success', 'Article successfully deleted!');
 
         return $this->redirectToRoute('article_index');
     }

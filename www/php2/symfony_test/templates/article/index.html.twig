@@ -5,18 +5,26 @@
 {% block body %}
     <a href="/article/create"><button>Create article</button></a>
 
-    {% for article in articles %}
-        <a href="article/{{ article.id }}">
-            <h2>
-                Article № {{ article.id }}
-            </h2>
-        </a>
-        title: {{ article.title }} <br>
-        {% if article.content == null %}
-            no content <br>
-        {% else %}
-            content: {{ article.content }} <br>
-        {% endif %}
-        author_id: {{ article.authorid }} <br>
-    {% endfor %}
+    {% if articles is not empty %}
+        {% for article in articles %}
+            <a href="article/{{ article.id }}">
+                <h2>
+                    Article № {{ article.id }}
+                </h2>
+            </a>
+            title: {{ article.title }} <br>
+            {% if article.content == null %}
+                no content <br>
+            {% else %}
+                content: {{ article.content }} <br>
+            {% endif %}
+            author_id: {{ article.authorid }} <br>
+        {% endfor %}
+    {% else %}
+        <br>
+        <h1>
+            No articles found!
+        </h1>
+    {% endif %}
+
 {% endblock %}
