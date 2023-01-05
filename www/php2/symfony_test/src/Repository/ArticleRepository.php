@@ -4,28 +4,28 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ArticleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Article::class);
+        $this->entityManager = $entityManager;
     }
 
-    public function add(Article $entity, bool $flush = true): void
+    public function add(Article $article): void
     {
-        $this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
     }
 
-    public function remove(Article $entity, bool $flush = true): void
+    public function remove(Article $article): void
     {
-        $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
     }
 }

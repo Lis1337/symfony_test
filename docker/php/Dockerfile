@@ -1,6 +1,6 @@
-FROM php:7.4.16-fpm-alpine3.13
+FROM php:8.0.5-fpm-alpine
 
-MAINTAINER PartOS <partos.k@mail.ru>
+MAINTAINER Ilyalin <lis4991@gmail.com>
 
 RUN apk add --no-cache \
         libzip-dev \

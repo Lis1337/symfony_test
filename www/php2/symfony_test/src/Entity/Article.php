@@ -36,6 +36,18 @@ class Article
      */
     protected User $author_id;
 
+    /**
+     * @param string $title
+     * @param User $author_id
+     * @param string|null $content
+     */
+    public function __construct(string $title, User $author_id, ?string $content)
+    {
+        $this->title = $title;
+        $this->author_id = $author_id;
+        $this->content = $content;
+    }
+
     public function getId(): int
     {
         return $this->id;

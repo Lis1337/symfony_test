@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\Article\ArticleCreateForm;
 use App\Form\Article\ArticleEditForm;
 use App\Repository\ArticleRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,16 +19,25 @@ class ArticleController extends AbstractController
     public ManagerRegistry $doctrine;
     public EntityManagerInterface $entityManager;
     public ArticleRepository $articleRepository;
+    private UserRepository $userRepository;
 
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param EntityManagerInterface $entityManager
+     * @param ArticleRepository $articleRepository
+     * @param UserRepository $userRepository
+     */
     public function __construct(
         ManagerRegistry $doctrine,
         EntityManagerInterface $entityManager,
-        ArticleRepository $articleRepository
+        ArticleRepository $articleRepository,
+        UserRepository $userRepository
     )
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $entityManager;
         $this->articleRepository = $articleRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index(): Response
@@ -61,10 +71,15 @@ class ArticleController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
 
                 $data = $form->getData();
-                $article = new Article();
-                $article->setTitle($data['title']);
-                $article->setAuthorId($data['author_id']);
-                $article->setContent($data['content']);
+                $author = $this->userRepository->findOneBy(
+                    ['id' => $data['author_id']]
+                );
+
+                $article = new Article(
+                    $data['title'],
+                    $author,
+                    $data['content']
+                );
 
                 $this->articleRepository->add($article);
                 $this->addFlash('success', 'Article successfully created!');
