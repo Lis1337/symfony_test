@@ -21,3 +21,7 @@ article_edit:
 article_delete:
     path: /article/{id}/delete
     controller: 'App\Controller\ArticleController::delete'
+
+grade_showFunctions:
+    path: /grade/showFunctions
+    controller: 'App\Controller\GradeController::showFunctions'
