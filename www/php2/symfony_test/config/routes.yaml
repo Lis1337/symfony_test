@@ -33,3 +33,7 @@ grade_cloneObjects:
 grade_dateTimePractice:
     path: /grade/dateTimePractice
     controller: 'App\Controller\GradeController::dateTimePractice'
+
+grade_getCookie:
+    path: /grade/getCookie
+    controller: 'App\Controller\GradeController::getCookie'
