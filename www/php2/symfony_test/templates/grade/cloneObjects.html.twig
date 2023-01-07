@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grade{% endblock %}
+
+{% block body %}
+<div>
+    <p>
+        Apple !== anotherApple? {{ comparisonFirst }}
+    </p>
+    <p>
+        Apple == anotherApple? {{ apple == anotherApple }}
+    </p>
+    <p>
+        Apple != banana? {{ apple != banana }}
+    </p>
+    <p>
+        Apple === linkToApple? {{ comparisonThird }}
+    </p>
+
+</div>
+{% endblock %}

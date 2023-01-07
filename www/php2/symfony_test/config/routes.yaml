@@ -25,3 +25,7 @@ article_delete:
 grade_showFunctions:
     path: /grade/showFunctions
     controller: 'App\Controller\GradeController::showFunctions'
+
+grade_cloneObjects:
+    path: /grade/cloneObjects
+    controller: 'App\Controller\GradeController::cloneObjects'
