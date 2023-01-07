@@ -37,3 +37,7 @@ grade_dateTimePractice:
 grade_getCookie:
     path: /grade/getCookie
     controller: 'App\Controller\GradeController::getCookie'
+
+grade_guzzle:
+    path: /grade/guzzle
+    controller: 'App\Controller\GradeController::guzzle'

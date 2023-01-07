@@ -3,11 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Fruit;
+use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class GradeController extends AbstractController
 {
+    private string $pbToken;
+    private Client $client;
+
+    public function __construct(string $pbToken)
+    {
+        $this->pbToken = $pbToken;
+        $this->client = new Client();
+    }
+
     public function showFunctions(): Response
     {
         return $this->render(
@@ -138,5 +148,55 @@ class GradeController extends AbstractController
                 'cookie' => $_COOKIE['test']
             ]
         );
+    }
+
+    public function guzzle()
+    {
+        $token = $this->getToken();
+
+        $houseDecode = $this->getHouseDecode($token);
+        $projectName = $houseDecode['data'][0]['projectName'];
+
+        return $this->render(
+            'grade/guzzle.html.twig',
+            ['projectName' => $projectName]
+        );
+    }
+
+    protected function getToken(): string
+    {
+        $params = [
+            'type' => 'api-app',
+            'credentials' => [
+                'pb_api_key' => $this->pbToken
+            ]
+        ];
+
+        $auth = $this->client->request(
+            'POST',
+            'https://pb14746.profitbase.ru/api/v4/json/authentication',
+            [
+                'json' => $params
+            ]
+        )->getBody()->getContents();
+
+        $authDecode = json_decode($auth, true);
+        return $authDecode['access_token'];
+    }
+
+    protected function getHouseDecode(string $token): array
+    {
+        $house = $this->client->request(
+            'GET',
+            'https://pb14746.profitbase.ru/api/v4/json/house',
+            [
+                'query' => [
+                    'access_token' => $token,
+                    'id' => 98793
+                ]
+            ]
+        )->getBody()->getContents();
+
+        return json_decode($house, true, JSON_UNESCAPED_UNICODE);
     }
 }
