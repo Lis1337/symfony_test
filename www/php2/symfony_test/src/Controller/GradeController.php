@@ -88,4 +88,39 @@ class GradeController extends AbstractController
             ]
         );
     }
+
+    public function dateTimePractice()
+    {
+        $currentTime = '2023-01-07 13:06:19.0';
+        $anotherTimeFormat = '12:00 07.01.25';
+
+        $unixTime = strtotime($currentTime);
+
+        $timeFromString = new \DateTime($currentTime);
+        $timeFromUnixTime = (new \DateTime())->setTimestamp($unixTime);
+
+        $curTimeAtom = '2023-01-07T08:20:25+00:00';
+        $timeAtom = (new \DateTime())->format(\DateTimeInterface::ATOM);
+
+        $time = new \DateTime($currentTime);
+        $time->add(new \DateInterval('P1Y'));
+        $time->add(new \DateInterval('P1M'));
+
+
+        $dtImmutable = new \DateTimeImmutable($currentTime);
+        $anotherDtImmutable = (new \DateTimeImmutable())->setTimestamp($unixTime);
+
+        $dateFromAnotherFormat = new \DateTime();
+        $dateFromAnotherFormat = $dateFromAnotherFormat::createFromFormat('G:i d.m.y', $anotherTimeFormat);
+
+        return $this->render(
+            'grade/dateTimePractice.html.twig',
+            [
+                'dateTimeModified' => $time->format('Y-m-d H:i:s.u'),
+                'dateTimeImmutable' => $dtImmutable->format(\DateTimeInterface::ATOM),
+                'dateTimeAnotherFormat' => $dateFromAnotherFormat->format('Y-m-d H:i:s.u')
+            ]
+        );
+
+    }
 }
