@@ -89,8 +89,14 @@ class GradeController extends AbstractController
         );
     }
 
-    public function dateTimePractice()
+    public function dateTimePractice(): Response
     {
+        setcookie(
+            'test',
+            'happy new year!',
+            strtotime('+1 hour')
+        );
+
         $currentTime = '2023-01-07 13:06:19.0';
         $anotherTimeFormat = '12:00 07.01.25';
 
@@ -122,5 +128,15 @@ class GradeController extends AbstractController
             ]
         );
 
+    }
+
+    public function getCookie(): Response
+    {
+        return $this->render(
+            'grade/getCookie.html.twig',
+            [
+                'cookie' => $_COOKIE['test']
+            ]
+        );
     }
 }
