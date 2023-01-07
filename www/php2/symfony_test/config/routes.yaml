@@ -29,3 +29,7 @@ grade_showFunctions:
 grade_cloneObjects:
     path: /grade/cloneObjects
     controller: 'App\Controller\GradeController::cloneObjects'
+
+grade_dateTimePractice:
+    path: /grade/dateTimePractice
+    controller: 'App\Controller\GradeController::dateTimePractice'
