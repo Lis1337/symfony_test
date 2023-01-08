@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Fruit;
 use GuzzleHttp\Client;
+use Port\Spreadsheet\SpreadsheetReader;
+use Port\Spreadsheet\SpreadsheetWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -198,5 +200,51 @@ class GradeController extends AbstractController
         )->getBody()->getContents();
 
         return json_decode($house, true, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function readAndWrite(): Response
+    {
+        $dir = '/var/www/php2/symfony_test/tmp/test.xlsx';
+        $file = new \SplFileObject($dir, 'r');
+
+        $data = $this->readFile($file);
+        $this->writeFile($file, $data);
+
+        $result = $this->readFile($file);
+
+        return $this->render(
+            'grade/readAndWrite.html.twig',
+            ['result' => $result]
+        );
+
+    }
+
+    private function readFile(\SplFileObject $file): array
+    {
+        $data = [];
+        $reader = new SpreadsheetReader($file);
+
+        foreach ($reader as $row) {
+            foreach ($row as $item) {
+                $data[] = $item;
+            }
+        }
+        return $data;
+    }
+
+    private function writeFile(\SplFileObject $file, array $data): void
+    {
+        $writer = new SpreadsheetWriter($file);
+        $writer->prepare();
+
+        $newData = [];
+        foreach ($data as $item) {
+            if (isset($item)) {
+                $newData[] = ++$item;
+            }
+        }
+
+        $writer->writeItem($newData);
+        $writer->finish();
     }
 }
