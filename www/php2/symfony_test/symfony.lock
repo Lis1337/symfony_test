@@ -96,6 +96,9 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "ezyang/htmlpurifier": {
+        "version": "v4.16.0"
+    },
     "fig/link-util": {
         "version": "1.1.2"
     },
@@ -114,11 +117,23 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "maennchen/zipstream-php": {
+        "version": "v2.4.0"
+    },
+    "markbaker/complex": {
+        "version": "3.0.2"
+    },
+    "markbaker/matrix": {
+        "version": "3.0.1"
+    },
     "monolog/monolog": {
         "version": "1.27.0"
     },
     "myclabs/deep-copy": {
         "version": "1.11.0"
+    },
+    "myclabs/php-enum": {
+        "version": "1.8.4"
     },
     "nelmio/cors-bundle": {
         "version": "2.2",
@@ -149,6 +164,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.6.0"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.26.0"
     },
     "phpspec/prophecy": {
         "version": "v1.15.0"
@@ -182,6 +200,12 @@
             "tests/bootstrap.php"
         ]
     },
+    "portphp/portphp": {
+        "version": "1.8.0"
+    },
+    "portphp/spreadsheet": {
+        "version": "1.0.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -202,6 +226,9 @@
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "psr/simple-cache": {
+        "version": "3.0.0"
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"

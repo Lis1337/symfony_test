@@ -41,3 +41,7 @@ grade_getCookie:
 grade_guzzle:
     path: /grade/guzzle
     controller: 'App\Controller\GradeController::guzzle'
+
+grade_readAndWrite:
+    path: /grade/readAndWrite
+    controller: 'App\Controller\GradeController::readAndWrite'

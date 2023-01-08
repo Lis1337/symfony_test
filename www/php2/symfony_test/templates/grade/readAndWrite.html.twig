@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grade{% endblock %}
+
+{% block body %}
+<div>
+    <p>
+        {% for item in result %}
+            {{ item }}
+            <br>
+        {% endfor %}
+    </p>
+</div>
+{% endblock %}
