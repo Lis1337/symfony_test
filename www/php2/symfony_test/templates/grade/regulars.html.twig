@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grade{% endblock %}
+
+{% block body %}
+<div>
+    <p>
+        {% if one == true %}
+            First email is correct
+        {% else %}
+            First email is incorrect
+        {% endif %}
+    </p>
+    <p>
+        {% if two == true %}
+            Second email is correct
+        {% else %}
+            Second email is incorrect
+        {% endif %}
+
+    </p>
+
+</div>
+{% endblock %}
