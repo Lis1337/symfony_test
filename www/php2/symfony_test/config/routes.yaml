@@ -45,3 +45,7 @@ grade_guzzle:
 grade_readAndWrite:
     path: /grade/readAndWrite
     controller: 'App\Controller\GradeController::readAndWrite'
+
+grade_regulars:
+    path: /grade/regulars
+    controller: 'App\Controller\GradeController::regulars'

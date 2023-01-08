@@ -247,4 +247,20 @@ class GradeController extends AbstractController
         $writer->writeItem($newData);
         $writer->finish();
     }
+
+    public function regulars(): Response
+    {
+        $pattern = '/^\w{1,10}@\w{1,10}.\w{1,3}$/';
+
+        $validateOne = preg_match($pattern, 'test@mail.ru');
+        $validateTwo = preg_match($pattern, 'test.mail@ru');
+
+        return $this->render(
+            'grade/regulars.html.twig',
+            [
+                'one' => $validateOne,
+                'two' => $validateTwo
+            ]
+        );
+    }
 }
