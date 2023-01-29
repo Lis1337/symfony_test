@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Fruit;
 use GuzzleHttp\Client;
-use Port\Spreadsheet\SpreadsheetReader;
-use Port\Spreadsheet\SpreadsheetWriter;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -204,14 +204,12 @@ class GradeController extends AbstractController
 
     public function readAndWrite(): Response
     {
-        $dir = '/var/www/php2/symfony_test/tmp/test.xlsx';
-        $file = new \SplFileObject($dir, 'r');
+        $dir = '/var/www/tmp/test.xlsx';
+        $data = $this->readFile($dir);
 
-        $data = $this->readFile($file);
-        $this->writeFile($file, $data);
+        $this->writeFile($data, $dir);
 
-        $result = $this->readFile($file);
-
+        $result = $this->readFile($dir);
         return $this->render(
             'grade/readAndWrite.html.twig',
             ['result' => $result]
@@ -219,33 +217,51 @@ class GradeController extends AbstractController
 
     }
 
-    private function readFile(\SplFileObject $file): array
+    private function readFile(string $dir): array
     {
-        $data = [];
-        $reader = new SpreadsheetReader($file);
+        $inputType = 'Xlsx';
 
-        foreach ($reader as $row) {
-            foreach ($row as $item) {
-                $data[] = $item;
+        $reader = IOFactory::createReader($inputType);
+        $spreadsheet = $reader->load($dir);
+
+        $workSheets = $spreadsheet->getWorksheetIterator();
+
+        $data = [];
+        foreach ($workSheets as $workSheet) {
+            foreach ($workSheet->toArray() as $itemsArray) {
+                foreach ($itemsArray as $item) {
+                    $data[] = ++$item;
+                }
             }
         }
+
         return $data;
     }
 
-    private function writeFile(\SplFileObject $file, array $data): void
+    private function writeFile(array $data, string $dir): void
     {
-        $writer = new SpreadsheetWriter($file);
-        $writer->prepare();
+        $spreadsheet = new Spreadsheet();
+        $activeSheet = $spreadsheet->getActiveSheet();
 
-        $newData = [];
+        $activeSheet->getCell("A1")->setValue("RESULT");
+        $tableHeaderStyles = [
+            'font' => [
+                'bold' => true,
+            ],
+        ];
+        $activeSheet->getStyle("A1")->applyFromArray($tableHeaderStyles);
+
+        $rowNum = 2;
         foreach ($data as $item) {
-            if (isset($item)) {
-                $newData[] = ++$item;
-            }
+            $activeSheet->getCell("A$rowNum")->setValue($item);
+            $rowNum += 1;
         }
 
-        $writer->writeItem($newData);
-        $writer->finish();
+        $lastRow = $rowNum - 1;
+        $activeSheet->getCell("A$rowNum")->setValue("=SUM(A2:A$lastRow)");
+
+        $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save($dir);
     }
 
     public function regulars(): Response

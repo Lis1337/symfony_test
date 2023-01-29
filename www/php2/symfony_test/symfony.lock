@@ -200,12 +200,6 @@
             "tests/bootstrap.php"
         ]
     },
-    "portphp/portphp": {
-        "version": "1.8.0"
-    },
-    "portphp/spreadsheet": {
-        "version": "1.0.1"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
