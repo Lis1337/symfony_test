@@ -5,6 +5,8 @@
 {% block body %}
 <div>
     <p>
+        FirstMail = {{ mailOne }}
+        <br>
         {% if one == true %}
             First email is correct
         {% else %}
@@ -12,10 +14,32 @@
         {% endif %}
     </p>
     <p>
+        SecondMail = {{ mailTwo }}
+        <br>
         {% if two == true %}
             Second email is correct
         {% else %}
             Second email is incorrect
+        {% endif %}
+
+    </p>
+    <p>
+        FirstUrl = {{ three }}
+        <br>
+        {% if validateThree == true %}
+            Second email is correct
+        {% else %}
+            Second email is incorrect
+        {% endif %}
+
+    </p>
+    <p>
+        SecondUrl = {{ four }}
+        <br>
+        {% if validateFour == true %}
+            Second url is correct
+        {% else %}
+            Second url is incorrect
         {% endif %}
 
     </p>
