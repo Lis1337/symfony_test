@@ -295,4 +295,39 @@ class GradeController extends AbstractController
             ]
         );
     }
+
+    public function startSessions(): Response
+    {
+        session_start();
+
+        echo 'Here session is started';
+
+        $_SESSION['phone'] = 'black';
+        $_SESSION['car'] = 'brown';
+        $_SESSION['door'] = 'white';
+
+        echo '<br/><a href="/grade/getDataFromSession">page 2</a>';
+
+        return $this->render(
+            'grade/startSession.html.twig',
+            []
+        );
+    }
+
+    public function getDataFromSession()
+    {
+        session_start();
+
+        $result = [];
+        foreach ($_SESSION as $key => $item) {
+            if (in_array($key, ['phone', 'car', 'door'])) {
+                $result[] = $item;
+            }
+        }
+
+        return $this->render(
+            'grade/getDataFromSession.html.twig',
+            ['result' => $result]
+        );
+    }
 }
