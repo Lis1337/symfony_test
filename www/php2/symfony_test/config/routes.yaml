@@ -49,3 +49,11 @@ grade_readAndWrite:
 grade_regulars:
     path: /grade/regulars
     controller: 'App\Controller\GradeController::regulars'
+
+start_sessions:
+    path: /grade/startSessions
+    controller: 'App\Controller\GradeController::startSessions'
+
+get_data_from_session:
+    path: /grade/getDataFromSession
+    controller: 'App\Controller\GradeController::getDataFromSession'
