@@ -268,14 +268,30 @@ class GradeController extends AbstractController
     {
         $pattern = '/^\w{1,10}@\w{1,10}.\w{1,3}$/';
 
-        $validateOne = preg_match($pattern, 'test@mail.ru');
-        $validateTwo = preg_match($pattern, 'test.mail@ru');
+        $mailOne = 'test@mail.ru';
+        $mailTwo = 'test.mail@ru';
+        $validateOne = preg_match($pattern, $mailOne);
+        $validateTwo = preg_match($pattern, $mailTwo);
+
+
+        $patternTwo = '/^(https):\/\/(profitbase).(ru)\/$/';
+        $urlOne = 'https://profitbase.ru/';
+        $urlTwo = 'https://pr0fitbase.ry/';
+
+        $validateThree = preg_match($patternTwo, $urlOne);
+        $validateFour = preg_match($patternTwo, $urlTwo);
 
         return $this->render(
             'grade/regulars.html.twig',
             [
                 'one' => $validateOne,
-                'two' => $validateTwo
+                'two' => $validateTwo,
+                'mailOne' => $mailOne,
+                'mailTwo' => $mailTwo,
+                'three' => $urlOne,
+                'four' => $urlTwo,
+                'validateThree' => $validateThree,
+                'validateFour' => $validateFour
             ]
         );
     }
